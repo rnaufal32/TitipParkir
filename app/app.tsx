@@ -5,7 +5,7 @@
 import "./i18n"
 import React, { useState, useEffect } from "react"
 import { AppRegistry, YellowBox } from "react-native"
-import { StatefulNavigator, BackButtonHandler, exitRoutes } from "./navigation"
+import { StatefulNavigator, BackButtonHandler } from "./navigation"
 import { RootStore, RootStoreProvider, setupRootStore } from "./models/root-store"
 
 import { contains } from "ramda"
@@ -44,7 +44,7 @@ Object.defineProperty(ReactNative, "AsyncStorage", {
  *
  * @param routeName The currently active route name.
  */
-const canExit = (routeName: string) => contains(routeName, exitRoutes)
+const canExit = (routeName: string) => contains(routeName, 'home')
 
 /**
  * This is the root component of our app.
@@ -54,7 +54,6 @@ export const App: React.FunctionComponent<{}> = () => {
   useEffect(() => {
     setupRootStore().then(setRootStore)
   }, [])
-
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
   // color set in native by rootView's background color.

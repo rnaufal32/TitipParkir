@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect } from "react"
-import { BackHandler } from "react-native"
+import { BackHandler, BackA } from "react-native"
 import { observer } from "mobx-react-lite"
 import { NavigationActions } from "react-navigation"
 import { useStores } from "../models/root-store"
@@ -23,6 +23,7 @@ export const BackButtonHandler: FunctionComponent<BackButtonHandlerProps> = obse
       // are we allowed to exit?
       if (props.canExit(routeName)) {
         // let the system know we've not handled this event
+        BackHandler.exitApp()
         return false
       } else {
         // we can't exit, so let's turn this into a back action

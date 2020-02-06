@@ -1,4 +1,4 @@
-import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { Instance, SnapshotOut, types, getEnv } from "mobx-state-tree"
 import { NavigationStoreModel } from "../../navigation/navigation-store"
 import { ParkingModel } from "../parking-model"
 
@@ -29,6 +29,7 @@ export const RootStoreModel = types.model("RootStore").props({
       self.get([arrays])
       self.done()
     }, 2000);
+    console.log(getEnv(self).api.get)
   },
   addParking: (parking: ParkingModel) => (self.add(parking))
 }))

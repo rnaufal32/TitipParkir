@@ -1,19 +1,30 @@
-import { createStackNavigator } from "react-navigation-stack"
-import { PrimaryNavigator } from "./primary-navigator"
+import createNativeStackNavigator from "react-native-screens/createNativeStackNavigator"
 import {
   HomeScreen,
   ParkirAddScreen,
+  WelcomeScreen,
 } from "../screens" // eslint-disable-line @typescript-eslint/no-unused-vars
 
-export const RootNavigator = createStackNavigator(
+export const MainNavigators = createNativeStackNavigator(
   {
     parkirAdd: { screen: ParkirAddScreen },
     home: { screen: HomeScreen },
-    primaryStack: { screen: PrimaryNavigator },
   },
   {
     headerMode: "none",
     navigationOptions: { gesturesEnabled: false },
-    initialRouteName: "primaryStack"
+    initialRouteName: "home"
+  },
+)
+
+export const RootNavigator = createNativeStackNavigator(
+  {
+    main: { screen: MainNavigators },
+    welcome: { screen: WelcomeScreen },
+  },
+  {
+    headerMode: "none",
+    navigationOptions: { gesturesEnabled: false },
+    initialRouteName: "welcome"
   },
 )

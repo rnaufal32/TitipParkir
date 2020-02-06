@@ -25,7 +25,7 @@ const TITLE: TextStyle = {
 export interface WelcomeScreenProps extends NavigationInjectedProps<{}> {}
 
 export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props => {
-  const nextScreen = React.useMemo(() => () => props.navigation.navigate("home"), [
+  const nextScreen = React.useMemo(() => () => props.navigation.navigate("main"), [
     props.navigation,
   ])
 
