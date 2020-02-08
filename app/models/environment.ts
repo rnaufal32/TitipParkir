@@ -1,4 +1,5 @@
 import { Api } from "../services/api"
+import { RealmDB } from "../services/realm"
 
 let ReactotronDev
 if (__DEV__) {
@@ -18,6 +19,7 @@ export class Environment {
       this.reactotron = new ReactotronDev()
     }
     this.api = new Api()
+    this.realm = new RealmDB()
   }
 
   async setup() {
@@ -26,6 +28,8 @@ export class Environment {
       await this.reactotron.setup()
     }
     await this.api.setup()
+
+    await this.realm.setup()
   }
 
   /**
@@ -37,4 +41,6 @@ export class Environment {
    * Our api.
    */
   api: Api
+
+  realm: RealmDB
 }

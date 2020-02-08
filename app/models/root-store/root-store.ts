@@ -1,6 +1,7 @@
-import { Instance, SnapshotOut, types, getEnv } from "mobx-state-tree"
+import { Instance, SnapshotOut, types, getEnv, flow } from "mobx-state-tree"
 import { NavigationStoreModel } from "../../navigation/navigation-store"
 import { ParkingModel } from "../parking-model"
+import { withEnvironment } from "../extensions"
 
 /**
  * A RootStore model.
@@ -19,6 +20,7 @@ export const RootStoreModel = types.model("RootStore").props({
   },
   done: () => (self.status = "done")
 }))
+.extend(withEnvironment)
 .actions(self => ({
   getParking: () => {
     setTimeout(() => {
@@ -29,8 +31,11 @@ export const RootStoreModel = types.model("RootStore").props({
       self.get([arrays])
       self.done()
     }, 2000);
-    console.log(getEnv(self).api.get)
   },
+  tesRealm: flow(function*(){
+    console.log("WEW")
+    self.environment.realm.getCar()
+  }),
   addParking: (parking: ParkingModel) => (self.add(parking))
 }))
 

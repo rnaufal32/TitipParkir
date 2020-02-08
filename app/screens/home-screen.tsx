@@ -6,7 +6,6 @@ import { Screen, Text, Header, Button } from "../components"
 import { color, spacing } from "../theme"
 import { NavigationScreenProps } from "react-navigation"
 import { useStores } from "../models/root-store";
-import { ParkingModel } from "../models/parking-model"
 
 export interface HomeScreenProps extends NavigationScreenProps<{}> {
 }
@@ -27,14 +26,14 @@ const TEXTCENTER: TextStyle = {
   textAlign: 'center'
 }
 
-
 export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((props) => {
 
   const rootStore = useStores()
   const { parking, status } = rootStore
-  
+
   const nextScreen = () => {
     props.navigation.navigate('parkirAdd')
+    rootStore.tesRealm()
   }
 
   React.useEffect(() => {
