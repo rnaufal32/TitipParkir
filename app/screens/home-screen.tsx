@@ -2,10 +2,11 @@ import * as React from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, View, TextStyle } from "react-native"
 import { Screen, Text, Header, Button } from "../components"
-// import { useStores } from "../models/root-store"
 import { color, spacing } from "../theme"
 import { NavigationScreenProps } from "react-navigation"
 import { useStores } from "../models/root-store";
+import { ParkingModel } from "../models/parking-model"
+import { TouchableOpacity } from "react-native-gesture-handler"
 
 export interface HomeScreenProps extends NavigationScreenProps<{}> {
 }
@@ -16,9 +17,6 @@ const ROOT: ViewStyle = {
 }
 
 const CONTAINER: ViewStyle = {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
   paddingHorizontal: spacing[5]
 }
 
@@ -33,7 +31,6 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
 
   const nextScreen = () => {
     props.navigation.navigate('parkirAdd')
-    rootStore.tesRealm()
   }
 
   React.useEffect(() => {
@@ -48,11 +45,26 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
       <Screen style={CONTAINER} preset="scroll" backgroundColor={color.palette.white}>
         {
           status == "done" ?
-          <View>
+          <View style={{marginTop: 10}}>
+            <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+              <Text preset="title">Daftar Parkir Kamu</Text>
+              <Button text="Tambah" preset="primary" textStyle={{fontSize: 15}} onPress={nextScreen} />
+            </View>
             {
               parking.map((value, index) => (
-                <View key={index}>
-                  <Text preset="paragraph">{value.name}</Text>
+                <View key={index} style={{elevation: 2, backgroundColor: 'white', padding: 15, marginVertical: 15}}>
+                  <TouchableOpacity>
+                    <View>
+                      <View style={{flexDirection:'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <View>
+                          <Text preset="title" style={{fontSize: 15}}>#{value.id}</Text>
+                          <Text preset="title" style={{fontSize: 19}}>{value.name}</Text>
+                        </View>
+                        <Text style={{color: 'grey'}}>>21 km</Text>
+                      </View>
+                      <Text preset="paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit expedita molestias fugiat voluptatum unde est nostrum repellendus ut aut magnam sed sapiente in odit nemo ad dolores ratione, cum dignissimos?</Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               ))
             }
@@ -61,11 +73,12 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
           <View>
             <Text preset="title" style={TEXTCENTER}>Parkirin Bang...</Text>
             <Text preset="paragraph" style={TEXTCENTER}>Tekan tombol dibawah untuk menyimpan lokasi tempat parkinya bang...</Text>
+
+            <View style={{paddingVertical: spacing[5]}}>
+              <Button text="PARKIRIN" preset="primary" textStyle={{fontSize: 15}} onPress={nextScreen} />
+            </View>
           </View>
         }
-        <View style={{paddingVertical: spacing[5]}}>
-          <Button text="PARKIRIN" preset="primary" textStyle={{fontSize: 15}} onPress={nextScreen} />
-        </View>
       </Screen>
     </View>
   )

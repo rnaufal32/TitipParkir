@@ -45,7 +45,6 @@ export const presets = {
     outer: {
       backgroundColor: color.background,
       flex: 1,
-      height: "100%",
     } as ViewStyle,
     inner: { justifyContent: "flex-start", alignItems: "stretch" } as ViewStyle,
   },

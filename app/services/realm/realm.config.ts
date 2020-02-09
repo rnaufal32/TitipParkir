@@ -1,5 +1,5 @@
-import { MigrationCallback, ObjectSchema } from "realm";
-import { CarSchema } from "./realm.types";
+import { MigrationCallback, ObjectSchema, ObjectClass } from "realm";
+import { ParkingSchema } from "./realm.types";
 
 export interface RealmConfig {
     schema: Array<ObjectSchema>
@@ -8,7 +8,7 @@ export interface RealmConfig {
 }
 
 export const DEFAULT_REALM_CONFIG: RealmConfig = {
-    schema: [CarSchema],
+    schema: [ParkingSchema],
     schemaVersion: 0,
     migration: (oldRealm, newRealm) => {
         

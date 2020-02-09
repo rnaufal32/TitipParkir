@@ -1,6 +1,6 @@
 import { Instance, SnapshotOut, types, getEnv, flow } from "mobx-state-tree"
 import { NavigationStoreModel } from "../../navigation/navigation-store"
-import { ParkingModel } from "../parking-model"
+import { ParkingModel, ParkingModelSnapshot } from "../parking-model"
 import { withEnvironment } from "../extensions"
 
 /**
@@ -15,28 +15,30 @@ export const RootStoreModel = types.model("RootStore").props({
   add: (obj: ParkingModel) => {
     self.parking.push(obj)
   },
-  get: (array: ParkingModel[]) => {
-    self.parking.replace(array)
+  get: (array: ParkingModelSnapshot[]) => {
+    const values = array.map(c => ParkingModel.create(c))
+    self.parking.replace(values)
   },
-  done: () => (self.status = "done")
+  done: () => (self.status = "done"),
+  loading: () => (self.status = "loading"),
+  empty: () => (self.status = "empty")
 }))
 .extend(withEnvironment)
 .actions(self => ({
-  getParking: () => {
-    setTimeout(() => {
-      const arrays = {
-        id: 1,
-        name: "Testing"
-      }
-      self.get([arrays])
+  getParking: async() => {
+    self.loading()
+    const response = await self.environment.realm.getPark()
+    if (response.length > 0) {
+      self.get(response)
       self.done()
-    }, 2000);
+    } else {
+      self.empty()
+    }
   },
-  tesRealm: flow(function*(){
-    console.log("WEW")
-    self.environment.realm.getCar()
-  }),
-  addParking: (parking: ParkingModel) => (self.add(parking))
+  addParking: async (parking: ParkingModel) => {
+    const response = await self.environment.realm.addPark()
+    console.log(`Response ${response}`)
+  }
 }))
 
 /**

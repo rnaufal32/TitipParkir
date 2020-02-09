@@ -33,6 +33,7 @@ export const ParkirAddScreen: React.FunctionComponent<ParkirAddScreenProps> = ob
   const [ name, setName ] = React.useState(null)
   
   const goBack = () => {
+    rootStore.getParking()
     props.navigation.goBack()
   }
 

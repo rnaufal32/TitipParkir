@@ -1,4 +1,5 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import type from "ramda/es/type"
 
 /**
  * Model description here for TypeScript hints.
@@ -6,8 +7,17 @@ import { Instance, SnapshotOut, types } from "mobx-state-tree"
 export const ParkingModel = types
   .model("ParkingModel")
   .props({
-    id: types.number,
-    name: types.string
+    id: types.integer,
+    name: types.string,
+    accuracy: types.number,
+    altitude: types.number,
+    altitudeAccuracy: types.number,
+    heading: types.number,
+    latitude: types.number,
+    longitude: types.number,
+    speed: types.number,
+    photo: types.optional(types.array(types.string), []),
+    status: types.integer
   })
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

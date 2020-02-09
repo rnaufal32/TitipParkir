@@ -1,8 +1,19 @@
-export const CarSchema = {
-    name: 'Car',
+export const parkingName = 'Parking'
+
+export const ParkingSchema = {
+    name: parkingName,
+    primaryKey: 'id',
     properties: {
-      make:  'string',
-      model: 'string',
-      miles: {type: 'int', default: 0},
+      id: 'int',
+      name: 'string',
+      accuracy: 'double',
+      altitude: 'double',
+      altitudeAccuracy: 'double',
+      heading: 'double',
+      latitude: 'double',
+      longitude: 'double',
+      speed: 'double',
+      photo: {type: 'string?[]', default: []},
+      status: 'int'
     }
 };
