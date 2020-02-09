@@ -6,14 +6,14 @@ export const ParkingSchema = {
     properties: {
       id: 'int',
       name: 'string',
-      accuracy: 'double',
-      altitude: 'double',
-      altitudeAccuracy: 'double',
-      heading: 'double',
-      latitude: 'double',
-      longitude: 'double',
-      speed: 'double',
+      accuracy: 'int',
+      altitude: 'int',
+      isFromMockProvider: 'string',
+      latitude: 'int',
+      longitude: 'int',
+      speed: 'int',
       photo: {type: 'string?[]', default: []},
-      status: 'int'
+      status: 'int',
+      address: 'string'
     }
 };

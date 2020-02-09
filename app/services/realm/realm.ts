@@ -1,7 +1,7 @@
 import Realm from 'realm'
 import { DEFAULT_REALM_CONFIG, RealmConfig } from './realm.config'
 import { parkingName } from './realm.types'
-import { ParkingModelSnapshot } from '../../models/parking-model'
+import { ParkingModelSnapshot, ParkingModel } from '../../models/parking-model'
 
 const convertToPark = (data: any): ParkingModelSnapshot => {
     return {
@@ -15,7 +15,8 @@ const convertToPark = (data: any): ParkingModelSnapshot => {
         name: data.name,
         photo: [],
         speed: data.speed,
-        status: data.status
+        status: data.status,
+        address: data.address
     }
 }
 
@@ -37,27 +38,26 @@ export class RealmDB {
         return converted
     }
 
-    async addPark() {
+    async addPark(value: ParkingModel) {
         const park = this.realm.objects(parkingName).sorted('id', true)
         let ids = 0;
         if (park.length > 0) {
             ids = park[0].id + 1
         }
-        console.log(JSON.stringify(park))
-        console.log(ids)
         try {
             this.realm.write(() => this.realm.create(parkingName, {
                 id: ids,
-                name: 'Tes',
-                accuracy: 2,
-                altitude: 2,
-                altitudeAccuracy: 2,
-                heading: 1,
-                latitude: 0,
-                longitude: 0,
-                speed: 0,
+                name: value.name,
+                accuracy: value.accuracy,
+                altitude: value.altitude,
+                altitudeAccuracy: value.altitudeAccuracy,
+                heading: value.heading,
+                latitude: value.latitude,
+                longitude: value.longitude,
+                speed: value.speed,
                 photo: [],
-                status: 0
+                status: 0,
+                address: value.address
             }))
             return true;
         } catch(e) {

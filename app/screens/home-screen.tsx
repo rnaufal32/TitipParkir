@@ -5,7 +5,6 @@ import { Screen, Text, Header, Button } from "../components"
 import { color, spacing } from "../theme"
 import { NavigationScreenProps } from "react-navigation"
 import { useStores } from "../models/root-store";
-import { ParkingModel } from "../models/parking-model"
 import { TouchableOpacity } from "react-native-gesture-handler"
 
 export interface HomeScreenProps extends NavigationScreenProps<{}> {
@@ -27,14 +26,16 @@ const TEXTCENTER: TextStyle = {
 export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((props) => {
 
   const rootStore = useStores()
-  const { parking, status } = rootStore
+  const { parking, status } = rootStore.parkingStore
+  const { latitude, longitude } = rootStore.positionStore
 
   const nextScreen = () => {
     props.navigation.navigate('parkirAdd')
   }
 
   React.useEffect(() => {
-    rootStore && rootStore.getParking()
+    rootStore && rootStore.parkingStore.getParking()
+    rootStore.positionStore.getPosition((_) => {})
   }, [])
 
   return (
@@ -47,7 +48,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
           status == "done" ?
           <View style={{marginTop: 10}}>
             <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
-              <Text preset="title">Daftar Parkir Kamu</Text>
+              <Text preset="title">Daftar Parkir Abang</Text>
               <Button text="Tambah" preset="primary" textStyle={{fontSize: 15}} onPress={nextScreen} />
             </View>
             {
@@ -62,7 +63,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
                         </View>
                         <Text style={{color: 'grey'}}>>21 km</Text>
                       </View>
-                      <Text preset="paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit expedita molestias fugiat voluptatum unde est nostrum repellendus ut aut magnam sed sapiente in odit nemo ad dolores ratione, cum dignissimos?</Text>
+                      <Text preset="paragraph">{value.address}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -70,7 +71,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
             }
           </View>
           :
-          <View>
+          <View style={{marginTop: '40%'}}>
             <Text preset="title" style={TEXTCENTER}>Parkirin Bang...</Text>
             <Text preset="paragraph" style={TEXTCENTER}>Tekan tombol dibawah untuk menyimpan lokasi tempat parkinya bang...</Text>
 

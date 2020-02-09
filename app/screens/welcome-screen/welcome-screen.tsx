@@ -1,9 +1,8 @@
 import * as React from "react"
-import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
+import { View, ViewStyle, TextStyle} from "react-native"
 import { NavigationInjectedProps } from "react-navigation"
-import { Button, Header, Screen, Text, Wallpaper } from "../../components"
-import { color, spacing } from "../../theme"
-const bowserLogo = require("./bowser.png")
+import { Text } from "../../components"
+import { color } from "../../theme"
 
 const FULL: ViewStyle = { 
   flex: 1,

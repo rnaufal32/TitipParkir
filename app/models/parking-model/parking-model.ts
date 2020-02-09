@@ -9,15 +9,15 @@ export const ParkingModel = types
   .props({
     id: types.integer,
     name: types.string,
-    accuracy: types.number,
-    altitude: types.number,
-    altitudeAccuracy: types.number,
-    heading: types.number,
-    latitude: types.number,
-    longitude: types.number,
-    speed: types.number,
+    accuracy: types.optional(types.number, 0),
+    altitude: types.optional(types.number, 0),
+    isFromMockProvider: types.optional(types.boolean, false),
+    latitude: types.optional(types.number, 0),
+    longitude: types.optional(types.number, 0),
+    speed: types.optional(types.number, 0),
     photo: types.optional(types.array(types.string), []),
-    status: types.integer
+    status: types.integer,
+    address: types.string
   })
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

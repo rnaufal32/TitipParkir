@@ -1,5 +1,6 @@
 import { Api } from "../services/api"
 import { RealmDB } from "../services/realm"
+import { Geolocations } from "../services/geolocations"
 
 let ReactotronDev
 if (__DEV__) {
@@ -20,6 +21,7 @@ export class Environment {
     }
     this.api = new Api()
     this.realm = new RealmDB()
+    this.geolocation = new Geolocations()
   }
 
   async setup() {
@@ -30,6 +32,7 @@ export class Environment {
     await this.api.setup()
 
     await this.realm.setup()
+    await this.geolocation.setup()
   }
 
   /**
@@ -43,4 +46,5 @@ export class Environment {
   api: Api
 
   realm: RealmDB
+  geolocation: Geolocations
 }
