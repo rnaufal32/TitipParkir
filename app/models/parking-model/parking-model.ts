@@ -16,7 +16,7 @@ export const ParkingModel = types
     longitude: types.optional(types.number, 0),
     speed: types.optional(types.number, 0),
     photo: types.optional(types.array(types.string), []),
-    status: types.integer,
+    status: types.optional(types.integer, 0),
     address: types.string
   })
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

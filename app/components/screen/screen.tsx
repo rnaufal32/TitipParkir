@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, StatusBar, View } from "rea
 import { SafeAreaView } from "react-navigation"
 import { ScreenProps } from "./screen.props"
 import { isNonScrolling, offsets, presets } from "./screen.presets"
+import { color } from "../../theme"
 
 const isIos = Platform.OS === "ios"
 
@@ -36,7 +37,7 @@ function ScreenWithScrolling(props: ScreenProps) {
       behavior={isIos ? "padding" : null}
       keyboardVerticalOffset={offsets[props.keyboardOffset || "none"]}
     >
-      <StatusBar barStyle={props.statusBar || "light-content"} />
+      <StatusBar barStyle={props.statusBar || "light-content"} backgroundColor={color.primaryDarker} />
       <Wrapper style={[preset.outer, backgroundStyle]}>
         <ScrollView
           style={[preset.outer, backgroundStyle]}

@@ -6,6 +6,8 @@ import { color, spacing } from "../theme"
 import { NavigationScreenProps } from "react-navigation"
 import { useStores } from "../models/root-store";
 import { TouchableOpacity } from "react-native-gesture-handler"
+import { getDistance } from "geolib"
+import { ParkingModel } from "../models/parking-model"
 
 export interface HomeScreenProps extends NavigationScreenProps<{}> {
 }
@@ -33,10 +35,31 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
     props.navigation.navigate('parkirAdd')
   }
 
+  const detailScreen = (id) => {
+    rootStore.parkingStore.setId(id)
+    props.navigation.navigate('detail')
+  }
+
   React.useEffect(() => {
     rootStore && rootStore.parkingStore.getParking()
     rootStore.positionStore.getPosition((_) => {})
   }, [])
+
+  const distances = (value: ParkingModel) => {
+    // const get = getDistance({
+    //   latitude: value.latitude,
+    //   longitude: value.longitude,
+    // }, {
+    //   latitude: rootStore.positionStore.latitude,
+    //   longitude: rootStore.positionStore.longitude
+    // }, 1)
+    return "ASU"
+    if (get > 1000) {
+      return "WEW"
+    } else {
+      return "WAW"
+    }
+  }
 
   return (
     <View style={ROOT}>
@@ -54,14 +77,14 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
             {
               parking.map((value, index) => (
                 <View key={index} style={{elevation: 2, backgroundColor: 'white', padding: 15, marginVertical: 15}}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => detailScreen(index)}>
                     <View>
                       <View style={{flexDirection:'row', justifyContent: 'space-between', alignItems: 'center'}}>
                         <View>
                           <Text preset="title" style={{fontSize: 15}}>#{value.id}</Text>
                           <Text preset="title" style={{fontSize: 19}}>{value.name}</Text>
                         </View>
-                        <Text style={{color: 'grey'}}>>21 km</Text>
+                        <Text style={{color: 'grey'}}>>{distances(value.latitude)}</Text>
                       </View>
                       <Text preset="paragraph">{value.address}</Text>
                     </View>

@@ -9,21 +9,20 @@ export const ParkingStoreModel = types
   .model("ParkingStore")
   .props({
     parking: types.array(ParkingModel),
-    status: types.optional(types.enumeration(["empty", "loading", "done", "error"]), "empty")
+    status: types.optional(types.enumeration(["empty", "loading", "done", "error"]), "empty"),
+    current: types.optional(types.number, 0)
   })
   .views(self => ({}))
   .extend(withEnvironment)
   .actions(self => ({
-    add: (obj: ParkingModel) => {
-      self.parking.push(obj)
-    },
     get: (array: ParkingModelSnapshot[]) => {
       const values = array.map(c => ParkingModel.create(c))
       self.parking.replace(values)
     },
     done: () => (self.status = "done"),
     loading: () => (self.status = "loading"),
-    empty: () => (self.status = "empty")
+    empty: () => (self.status = "empty"),
+    setId: (id) => (self.current = id)
   }))  
   .actions(self => ({
     getParking: async() => {
@@ -39,6 +38,10 @@ export const ParkingStoreModel = types
     addParking: async (parking: ParkingModel) => {
       const response = await self.environment.realm.addPark(parking)
       return response;
+    },
+    upParking: async (parking: ParkingModel) => {
+      const response = await self.environment.realm.upPark(parking)
+      return response
     }
   }))
 

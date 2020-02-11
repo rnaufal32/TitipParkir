@@ -26,6 +26,7 @@ export const viewPresets = {
    * A smaller piece of secondard information.
    */
   primary: { ...BASE_VIEW, backgroundColor: color.primary } as ViewStyle,
+  danger: { ...BASE_VIEW, backgroundColor: 'red' } as ViewStyle,
 
   /**
    * A button without extras.

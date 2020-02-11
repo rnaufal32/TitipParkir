@@ -8,7 +8,8 @@ import { NavigationScreenProps } from "react-navigation"
 import Geocoder from 'react-native-geocoding';
 import { useStores } from "../models/root-store"
 import MapView, { Marker } from 'react-native-maps'
-import { GOOGLE_MAPS_API_KEY } from "react-native-dotenv";
+import { ParkingModel } from "../models/parking-model"
+// import { GOOGLE_MAPS_API_KEY } from "react-native-dotenv";
 
 export interface ParkirAddScreenProps extends NavigationScreenProps<{}> {
 }
@@ -24,23 +25,15 @@ const CONTAINER: ViewStyle = {
   height: '100%'
 }
 
-const TEXTCENTER: TextStyle = {
-  textAlign: 'center'
-}
-
-const MAPSSTYLE: ViewStyle = {
-  ...StyleSheet.absoluteFillObject
-}
-
 export const ParkirAddScreen: React.FunctionComponent<ParkirAddScreenProps> = observer((props) => {
   
   React.useEffect(() => {
-    Geocoder.init(GOOGLE_MAPS_API_KEY);
+    // Geocoder.init(GOOGLE_MAPS_API_KEY);
   })
 
   const rootStore = useStores()
 
-  const { latitude, longitude, altitude, accuracy } = rootStore.positionStore
+  const { latitude, longitude, altitude, accuracy, speed } = rootStore.positionStore
 
   const [ name, setName ] = React.useState(null)
 
@@ -51,13 +44,24 @@ export const ParkirAddScreen: React.FunctionComponent<ParkirAddScreenProps> = ob
     props.navigation.goBack()
   }
 
-  const save = () => {
-    Geocoder.from(latitude, longitude)
-      .then(json => {
-          var addressComponent = json.results[0].address_components[0];
-          console.log(addressComponent, json);
-      })
-      .catch(error => console.warn(error));
+  const save = async () => {
+    // const geocode = await Geocoder.from(latitude, longitude)
+    // const address = geocode.results[0].address_components[0];
+    const address = "WAW"
+
+    const form: ParkingModel = {
+      accuracy,
+      address,
+      altitude,
+      id: 0,
+      isFromMockProvider: false,
+      latitude,
+      longitude,
+      name,
+      speed,
+    };
+
+    rootStore.parkingStore.addParking(form)
     goBack()
   }
 
@@ -70,7 +74,7 @@ export const ParkirAddScreen: React.FunctionComponent<ParkirAddScreenProps> = ob
   return (
     <View style={ROOT}>
       <Header
-        headerText="TAMBAH TITIP"
+        headerText="TITIPIN BANG"
         leftIcon="back"
         onLeftPress={goBack}
         titleStyle={{fontSize: 25}} />

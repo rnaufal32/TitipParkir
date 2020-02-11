@@ -3,6 +3,7 @@ import {
   HomeScreen,
   ParkirAddScreen,
   WelcomeScreen,
+  DetailScreen,
 } from "../screens" // eslint-disable-line @typescript-eslint/no-unused-vars
 
 export const MainNavigators = createNativeStackNavigator(
@@ -19,6 +20,7 @@ export const MainNavigators = createNativeStackNavigator(
 
 export const RootNavigator = createNativeStackNavigator(
   {
+    detail: { screen: DetailScreen },
     main: { screen: MainNavigators },
     welcome: { screen: WelcomeScreen },
   },

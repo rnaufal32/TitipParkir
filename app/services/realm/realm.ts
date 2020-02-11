@@ -33,7 +33,7 @@ export class RealmDB {
     }
 
     async getPark() {
-        const response = this.realm.objects(parkingName)
+        const response = this.realm.objects(parkingName).filtered('status = 0')
         const converted: ParkingModelSnapshot[] = response.map(convertToPark)
         return converted
     }
@@ -50,8 +50,7 @@ export class RealmDB {
                 name: value.name,
                 accuracy: value.accuracy,
                 altitude: value.altitude,
-                altitudeAccuracy: value.altitudeAccuracy,
-                heading: value.heading,
+                isFromMockProvider: 'false',
                 latitude: value.latitude,
                 longitude: value.longitude,
                 speed: value.speed,
@@ -62,6 +61,20 @@ export class RealmDB {
             return true;
         } catch(e) {
             return false;
+        }
+    }
+
+    async upPark(value: ParkingModel) {
+        try {
+            this.realm.write(() => this.realm.create(parkingName, {
+                id: value.id,
+                status: 1
+            }, true))
+
+            return true
+        } catch(e) {
+            console.log(e)
+            return false
         }
     }
 
