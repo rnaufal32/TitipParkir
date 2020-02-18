@@ -1,6 +1,6 @@
 import * as React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, View, TextStyle, StyleSheet } from "react-native"
+import { ViewStyle, View, TextStyle, StyleSheet, ActivityIndicator } from "react-native"
 import { Screen, Text, Header, Divider, TextField, Button } from "../components"
 // import { useStores } from "../models/root-store"
 import { color, spacing } from "../theme"
@@ -59,10 +59,14 @@ export const ParkirAddScreen: React.FunctionComponent<ParkirAddScreenProps> = ob
       longitude,
       name,
       speed,
+      photo: null,
+      status: 0
     };
 
     rootStore.parkingStore.addParking(form)
-    goBack()
+    if (!rootStore.parkingStore.ads) {
+      goBack()
+    }
   }
 
   const getLocation = React.useMemo(() => async () => {
@@ -79,22 +83,29 @@ export const ParkirAddScreen: React.FunctionComponent<ParkirAddScreenProps> = ob
         onLeftPress={goBack}
         titleStyle={{fontSize: 25}} />
       <Screen style={CONTAINER} preset="scroll" backgroundColor={color.palette.white}>
-        <TextField label="Nama Titip Parkiran" placeholder="Misal. Mall Surya Abadi" onChangeText={text => {setName(text)}} />
-        <View style={{width: '100%', height: 200}} >
-          {/* <MapView style={MAPSSTYLE}
-            ref={maps}
-            onMapReady={() => {
-              maps.current.fitToElements(true)
-            }}>
-            <Marker coordinate={{longitude, latitude}} />
-          </MapView> */}
-        </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing[3]}}>
-          <Text preset="paragraph">Akurasi : {accuracy} </Text>
-          <Button text="Ulangi Titik" textStyle={{fontSize: 17}} onPress={() => getLocation()} />
-        </View>
-        <Divider />
-        <Button text="Simpan" textStyle={{fontSize: 20}} onPress={save} />
+        {
+          (rootStore.parkingStore.ads) ?
+          <ActivityIndicator />
+          :
+          <View>
+            <TextField label="Nama Titip Parkiran" placeholder="Misal. Mall Surya Abadi" onChangeText={text => {setName(text)}} />
+            <View style={{width: '100%', height: 200}} >
+              {/* <MapView style={MAPSSTYLE}
+                ref={maps}
+                onMapReady={() => {
+                  maps.current.fitToElements(true)
+                }}>
+                <Marker coordinate={{longitude, latitude}} />
+              </MapView> */}
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing[3]}}>
+              <Text preset="paragraph">Akurasi : {accuracy} </Text>
+              <Button text="Ulangi Titik" textStyle={{fontSize: 17}} onPress={() => getLocation()} />
+            </View>
+            <Divider />
+            <Button text="Simpan" textStyle={{fontSize: 20}} onPress={save} />
+          </View>
+        }
       </Screen>
     </View>
   )

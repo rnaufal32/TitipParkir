@@ -1,6 +1,6 @@
 import * as React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, View, TextStyle } from "react-native"
+import { ViewStyle, View, TextStyle, Image } from "react-native"
 import { Screen, Text, Header, Button } from "../components"
 import { color, spacing } from "../theme"
 import { NavigationScreenProps } from "react-navigation"
@@ -94,7 +94,8 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
             }
           </View>
           :
-          <View style={{marginTop: '40%'}}>
+          <View style={{marginTop: '10%'}}>
+            <Image source={require('./empty.png')} style={{resizeMode:'center', height:300, width:'100%'}} />
             <Text preset="title" style={TEXTCENTER}>Parkirin Bang...</Text>
             <Text preset="paragraph" style={TEXTCENTER}>Tekan tombol dibawah untuk menyimpan lokasi tempat parkinya bang...</Text>
 

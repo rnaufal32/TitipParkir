@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View, ViewStyle, TextStyle} from "react-native"
+import { View, ViewStyle, TextStyle, Image } from "react-native"
 import { NavigationInjectedProps } from "react-navigation"
 import { Text } from "../../components"
 import { color } from "../../theme"
@@ -16,7 +16,7 @@ const BOLD: TextStyle = { fontWeight: "bold" }
 const TITLE: TextStyle = {
   ...TEXT,
   ...BOLD,
-  fontSize: 28,
+  fontSize: 17,
   lineHeight: 38,
   textAlign: "center",
 }
@@ -34,7 +34,8 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
 
   return (
     <View style={FULL}>
-      <Text style={TITLE}>CENTER</Text>
+      <Image source={require('../logo_tipar.png')} style={{width: '100%', resizeMode:'center'}} />
+      <Text style={TITLE}>Versi 1.0</Text>
     </View>
   )
 }

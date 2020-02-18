@@ -1,4 +1,5 @@
 export const parkingName = 'Parking'
+export const admobName = 'Admob'
 
 export const ParkingSchema = {
     name: parkingName,
@@ -17,3 +18,12 @@ export const ParkingSchema = {
       address: 'string'
     }
 };
+
+export const AdmobSchema = {
+  name: admobName,
+  primaryKey: 'id',
+  properties: {
+    id: 'int',
+    count: 'int'
+  }
+}

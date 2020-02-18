@@ -52,18 +52,18 @@ export const DetailScreen: React.FunctionComponent<DetailScreenProps> = observer
   }, [])
 
   React.useEffect(() => {
-    const get = getDistance({
-      latitude: parking[current].latitude,
-      longitude: parking[current].longitude,
-    }, {
-      latitude: positionStore.latitude,
-      longitude: positionStore.longitude
-    }, 1)
-    if (get > 1000) {
-      setDistance(parseInt(get / 1000).toString() + "KM")
-    } else {
-      setDistance(parseInt(get).toString() + "M")
-    }
+    // const get = getDistance({
+    //   latitude: parking[current].latitude,
+    //   longitude: parking[current].longitude,
+    // }, {
+    //   latitude: positionStore.latitude,
+    //   longitude: positionStore.longitude
+    // }, 1)
+    // if (get > 1000) {
+    //   setDistance(parseInt(get / 1000).toString() + "KM")
+    // } else {
+    //   setDistance(parseInt(get).toString() + "M")
+    // }
   })
 
   return (
@@ -78,7 +78,7 @@ export const DetailScreen: React.FunctionComponent<DetailScreenProps> = observer
         <View style={CARD}>
           <View style={{flexDirection:'row', justifyContent:'space-between'}}>
             <Text preset="title">{ parking[current].name }</Text>
-            <Button text="Edit" textStyle={{fontSize: 15}} preset="danger" />
+            {/* <Button text="Edit" textStyle={{fontSize: 15}} preset="danger" /> */}
           </View>
           <Text preset="paragraph">{ parking[current].address }</Text>
         </View>

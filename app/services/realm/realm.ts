@@ -1,6 +1,6 @@
 import Realm from 'realm'
 import { DEFAULT_REALM_CONFIG, RealmConfig } from './realm.config'
-import { parkingName } from './realm.types'
+import { parkingName, admobName } from './realm.types'
 import { ParkingModelSnapshot, ParkingModel } from '../../models/parking-model'
 
 const convertToPark = (data: any): ParkingModelSnapshot => {
@@ -30,6 +30,29 @@ export class RealmDB {
 
     setup() {
         this.realm = new Realm(this.config)
+
+        const adscount = this.realm.objects(admobName)
+        if (adscount.length < 1) {
+            this.realm.write(() => {
+                this.realm.create(admobName, {
+                    id: 1,
+                    count: 0
+                })
+            })
+        }
+    }
+
+    async getAdmobCount() {
+        const response = this.realm.objects(admobName)
+        return response[0].count
+    }
+
+    async upAdmobCount(counts) {
+        const response = this.realm.objects(admobName)
+        this.realm.write(() => {
+            response[0].count = counts
+        })
+        console.log(response[0].count)
     }
 
     async getPark() {
