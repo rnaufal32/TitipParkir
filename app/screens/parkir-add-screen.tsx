@@ -1,22 +1,20 @@
 import * as React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, View, TextStyle, StyleSheet, ActivityIndicator } from "react-native"
+import { ViewStyle, View, TextStyle, StyleSheet, ActivityIndicator, Image } from "react-native"
 import { Screen, Text, Header, Divider, TextField, Button } from "../components"
-// import { useStores } from "../models/root-store"
 import { color, spacing } from "../theme"
 import { NavigationScreenProps } from "react-navigation"
-import Geocoder from 'react-native-geocoding';
+import NativeGeocoder from 'react-native-geocoder';
 import { useStores } from "../models/root-store"
 import MapView, { Marker } from 'react-native-maps'
 import { ParkingModel } from "../models/parking-model"
-// import { GOOGLE_MAPS_API_KEY } from "react-native-dotenv";
 
 export interface ParkirAddScreenProps extends NavigationScreenProps<{}> {
 }
 
 const ROOT: ViewStyle = {
   flex: 1,
-  backgroundColor: color.primaryDarker
+  backgroundColor: color.primaryDarker,
 }
 
 const CONTAINER: ViewStyle = {
@@ -25,53 +23,55 @@ const CONTAINER: ViewStyle = {
   height: '100%'
 }
 
+const MAPSSTYLE: ViewStyle = {
+  ...StyleSheet.absoluteFillObject
+}
+
 export const ParkirAddScreen: React.FunctionComponent<ParkirAddScreenProps> = observer((props) => {
   
   React.useEffect(() => {
     // Geocoder.init(GOOGLE_MAPS_API_KEY);
   })
 
-  const rootStore = useStores()
+  const { positionStore, navigationStore, parkingStore } = useStores()
 
-  const { latitude, longitude, altitude, accuracy, speed } = rootStore.positionStore
+  const { latitude, longitude, altitude, accuracy, speed } = positionStore
 
   const [ name, setName ] = React.useState(null)
 
-  const maps = React.useRef()
+  const maps = React.useRef(null)
   
   const goBack = () => {
-    rootStore.parkingStore.getParking()
-    props.navigation.goBack()
+    parkingStore.getParking()
+    navigationStore.goBack()
   }
 
   const save = async () => {
-    // const geocode = await Geocoder.from(latitude, longitude)
-    // const address = geocode.results[0].address_components[0];
-    const address = "WAW"
-
-    const form: ParkingModel = {
-      accuracy,
-      address,
-      altitude,
-      id: 0,
-      isFromMockProvider: false,
-      latitude,
-      longitude,
-      name,
-      speed,
-      photo: null,
-      status: 0
-    };
-
-    rootStore.parkingStore.addParking(form)
-    if (!rootStore.parkingStore.ads) {
-      goBack()
-    }
+    NativeGeocoder.getFullAddress(-6.8817, 108.4620, (address) => {
+      const form: ParkingModel = {
+        accuracy,
+        address,
+        altitude,
+        id: 0,
+        isFromMockProvider: false,
+        latitude,
+        longitude,
+        name,
+        speed,
+        photo: null,
+        status: 0
+      };
+  
+      parkingStore.addParking(form)
+      if (!parkingStore.ads) {
+        goBack()
+      }
+    });
   }
 
   const getLocation = React.useMemo(() => async () => {
-    rootStore.positionStore.getPosition(loc => {
-      // maps.current.fitToElements(true)
+    positionStore.getPosition(loc => {
+      maps.current.fitToElements(true)
     })
   }, [])
 
@@ -84,19 +84,21 @@ export const ParkirAddScreen: React.FunctionComponent<ParkirAddScreenProps> = ob
         titleStyle={{fontSize: 25}} />
       <Screen style={CONTAINER} preset="scroll" backgroundColor={color.palette.white}>
         {
-          (rootStore.parkingStore.ads) ?
+          (parkingStore.ads) ?
           <ActivityIndicator />
           :
           <View>
             <TextField label="Nama Titip Parkiran" placeholder="Misal. Mall Surya Abadi" onChangeText={text => {setName(text)}} />
             <View style={{width: '100%', height: 200}} >
-              {/* <MapView style={MAPSSTYLE}
+              <MapView style={MAPSSTYLE}
                 ref={maps}
                 onMapReady={() => {
                   maps.current.fitToElements(true)
                 }}>
-                <Marker coordinate={{longitude, latitude}} />
-              </MapView> */}
+                <Marker coordinate={{latitude, longitude}}>
+                  <Image source={require('./marker_parkir.png')} style={{width:50, height:50, resizeMode:'center'}} />
+                </Marker>
+              </MapView>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing[3]}}>
               <Text preset="paragraph">Akurasi : {accuracy} </Text>

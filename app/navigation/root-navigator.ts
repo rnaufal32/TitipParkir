@@ -10,6 +10,7 @@ export const MainNavigators = createNativeStackNavigator(
   {
     parkirAdd: { screen: ParkirAddScreen },
     home: { screen: HomeScreen },
+    detail: { screen: DetailScreen },
   },
   {
     headerMode: "none",
@@ -20,7 +21,6 @@ export const MainNavigators = createNativeStackNavigator(
 
 export const RootNavigator = createNativeStackNavigator(
   {
-    detail: { screen: DetailScreen },
     main: { screen: MainNavigators },
     welcome: { screen: WelcomeScreen },
   },

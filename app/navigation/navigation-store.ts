@@ -87,6 +87,10 @@ export const NavigationStoreModel = NavigationEvents.named("NavigationStore")
     navigateTo(routeName: string) {
       self.dispatch(NavigationActions.navigate({ routeName }))
     },
+
+    goBack() {
+      self.dispatch(NavigationActions.back())
+    }
   }))
 
 export type NavigationStore = Instance<typeof NavigationStoreModel>

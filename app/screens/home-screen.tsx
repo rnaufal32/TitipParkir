@@ -46,18 +46,17 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
   }, [])
 
   const distances = (value: ParkingModel) => {
-    // const get = getDistance({
-    //   latitude: value.latitude,
-    //   longitude: value.longitude,
-    // }, {
-    //   latitude: rootStore.positionStore.latitude,
-    //   longitude: rootStore.positionStore.longitude
-    // }, 1)
-    return "ASU"
+    const get = getDistance({
+      latitude: value.latitude,
+      longitude: value.longitude,
+    }, {
+      latitude: rootStore.positionStore.latitude,
+      longitude: rootStore.positionStore.longitude
+    }, 1)
     if (get > 1000) {
-      return "WEW"
+      return `${get/1000} km`
     } else {
-      return "WAW"
+      return `${get} m`
     }
   }
 
@@ -84,7 +83,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer((pr
                           <Text preset="title" style={{fontSize: 15}}>#{value.id}</Text>
                           <Text preset="title" style={{fontSize: 19}}>{value.name}</Text>
                         </View>
-                        <Text style={{color: 'grey'}}>>{distances(value.latitude)}</Text>
+                        <Text style={{color: 'grey'}}>>{distances(value)}</Text>
                       </View>
                       <Text preset="paragraph">{value.address}</Text>
                     </View>

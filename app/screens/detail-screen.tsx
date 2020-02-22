@@ -1,11 +1,12 @@
 import * as React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, View, Alert } from "react-native"
+import { ViewStyle, View, Alert, StyleSheet, Image } from "react-native"
 import { Screen, Text, Header, Button, Divider } from "../components"
 import { useStores } from "../models/root-store"
 import { color } from "../theme"
 import { NavigationScreenProps } from "react-navigation"
 import { getDistance } from 'geolib'
+import MapView, { Marker } from 'react-native-maps'
 
 export interface DetailScreenProps extends NavigationScreenProps<{}> {
 }
@@ -27,15 +28,23 @@ const CARD: ViewStyle = {
   marginVertical: 15
 }
 
+const MAPSSTYLE: ViewStyle = {
+  ...StyleSheet.absoluteFillObject
+}
+
 export const DetailScreen: React.FunctionComponent<DetailScreenProps> = observer((props) => {
-  const { parkingStore, positionStore } = useStores()
+  const { parkingStore, positionStore, navigationStore } = useStores()
   const { current, parking, upParking, getParking } = parkingStore
 
   const [distance, setDistance] = React.useState("")
+  const [lat, setLat] = React.useState(0.0)
+  const [lng, setLng] = React.useState(0.0)
+
+  const maps = React.useRef(null)
 
   const goBack = React.useMemo(() => async () => {
     getParking()
-    props.navigation.goBack()
+    navigationStore.goBack()
   }, [])
 
   const save = React.useMemo(() => async () => {
@@ -52,18 +61,21 @@ export const DetailScreen: React.FunctionComponent<DetailScreenProps> = observer
   }, [])
 
   React.useEffect(() => {
-    // const get = getDistance({
-    //   latitude: parking[current].latitude,
-    //   longitude: parking[current].longitude,
-    // }, {
-    //   latitude: positionStore.latitude,
-    //   longitude: positionStore.longitude
-    // }, 1)
-    // if (get > 1000) {
-    //   setDistance(parseInt(get / 1000).toString() + "KM")
-    // } else {
-    //   setDistance(parseInt(get).toString() + "M")
-    // }
+    setLat(parking[current].latitude)
+    setLng(parking[current].longitude)
+
+    const get = getDistance({
+      latitude: parking[current].latitude,
+      longitude: parking[current].longitude,
+    }, {
+      latitude: positionStore.latitude,
+      longitude: positionStore.longitude
+    }, 1)
+    if (get > 1000) {
+      setDistance((get / 1000).toString() + "KM")
+    } else {
+      setDistance(get.toString() + "M")
+    }
   })
 
   return (
@@ -74,7 +86,20 @@ export const DetailScreen: React.FunctionComponent<DetailScreenProps> = observer
         onLeftPress={goBack}
         titleStyle={{fontSize: 25}} />
       <Screen style={CONTAINER} preset="scroll">
-        <View style={{height: 250, borderRadius: 20, backgroundColor: 'blue'}}></View>
+        <View style={{height: 250}}>
+          <MapView style={MAPSSTYLE}
+            ref={maps}
+            onMapReady={() => {
+              maps.current.fitToElements(true)
+            }}>
+            <Marker coordinate={{latitude: lat, longitude:lng}}>
+              <Image source={require('./marker_parkir.png')} style={{width:50, height:50, resizeMode:'center'}} />
+            </Marker>
+            <Marker coordinate={{latitude: positionStore.latitude, longitude: positionStore.longitude}}>
+              <Image source={require('./marker_user.png')} style={{width:50, height:50, resizeMode:'center'}} />
+            </Marker>
+          </MapView>
+        </View>
         <View style={CARD}>
           <View style={{flexDirection:'row', justifyContent:'space-between'}}>
             <Text preset="title">{ parking[current].name }</Text>
