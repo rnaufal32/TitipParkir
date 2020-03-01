@@ -1,4 +1,4 @@
-package com.titipparkir;
+package std.aanrstudio.titipparkir;
 
 import android.app.Application;
 import android.content.Context;

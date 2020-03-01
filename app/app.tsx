@@ -79,7 +79,7 @@ export const App: React.FunctionComponent<{}> = () => {
 /**
  * This needs to match what's found in your app_delegate.m and MainActivity.java.
  */
-const APP_NAME = "TitipParkir"
+const APP_NAME = "Titip Parkir"
 
 // Should we show storybook instead of our app?
 //
